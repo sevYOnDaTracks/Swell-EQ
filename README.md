@@ -16,7 +16,7 @@ Fabricant : Swell Audio. JUCE 8 (copie partagée `../Swell-Reverse/JUCE`). Forma
 - Rangée du bas : réglages de la bande choisie (type, pente, fréquence, gain, Q, écoute en solo, suppression) et **Sortie**.
 - Types : cloche, plateau grave, plateau aigu, coupe-bas, coupe-haut (12 / 24 / 36 / 48 dB/oct, Q réglable), coupe-bande.
 - **Analyseur** en temps réel : spectre après l'égaliseur (rempli) et avant (trait fin), pente d'affichage +3 dB/oct.
-  Roue dentée : analyseur avant + après / après seulement / désactivé, échelle ±6 / ±12 / ±24 dB, tout remettre à plat.
+  Roue dentée : analyseur avant + après / après seulement / désactivé, échelle ±6 / ±12 / ±18 dB (gain des bandes : ±18 dB), tout remettre à plat.
 - **Résonances** : écoute le son quelques secondes (moyenne longue), repère les pics étroits qui dépassent nettement
   le spectre voisin, et les marque d'un point orange. Un clic sur un point ajoute une cloche qui l'atténue (gain et Q
   calculés d'après le pic) ; « Atténuer les N résonances » corrige tout d'un coup.

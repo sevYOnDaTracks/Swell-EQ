@@ -287,7 +287,7 @@ void CurveView::paintGrid (Graphics& g)
         g.setColour (colours::muted.withAlpha (0.7f));
         g.drawText (label, Rectangle<float> (x + 5.0f, h - 20.0f, 40.0f, 14.0f), Justification::centredLeft);
     }
-    const float step = range() <= 6.0f ? 3.0f : (range() <= 12.0f ? 6.0f : 12.0f);
+    const float step = range() <= 6.0f ? 3.0f : 6.0f;
     for (float db = -range(); db <= range() + 0.01f; db += step)
     {
         const float y = std::round (yForDb (db));
@@ -515,7 +515,7 @@ void CurveView::mouseDrag (const MouseEvent& e)
     if (hasGain (proc.band (dragging).type))
     {
         const float perPixel = range() / (plot().getHeight() * 0.5f - 12.0f);
-        float gain = jlimit (-24.0f, 24.0f, dragStartGain - delta.y * perPixel * scale);
+        float gain = jlimit (-18.0f, 18.0f, dragStartGain - delta.y * perPixel * scale);
         if (std::abs (gain) < 0.25f && ! e.mods.isShiftDown()) gain = 0.0f;   // petit cran à 0 dB
         auto* gp = param (dragging, "gain");
         gp->setValueNotifyingHost (gp->convertTo0to1 (gain));
@@ -544,7 +544,7 @@ void CurveView::mouseDoubleClick (const MouseEvent& e)
     BandType type = BandType::bell;
     if (f < 35.0f) type = BandType::lowCut;
     else if (f > 15000.0f) type = BandType::highCut;
-    const float gain = jlimit (-24.0f, 24.0f, std::round (dbForY (e.position.y) * 2.0f) / 2.0f);
+    const float gain = jlimit (-18.0f, 18.0f, std::round (dbForY (e.position.y) * 2.0f) / 2.0f);
     const int b = proc.addBand (type, jlimit (20.0f, 20000.0f, f), gain, (float) (type == BandType::bell ? 1.0 : butterworthQ));
     if (b >= 0) selection.set (b);
     repaint();
@@ -1082,7 +1082,7 @@ void Editor::showSettingsMenu()
     m.addSectionHeader (String::fromUTF8 ("Échelle de la courbe"));
     m.addItem (11, String::fromUTF8 ("± 6 dB"), true, proc.displayRange == 6);
     m.addItem (12, String::fromUTF8 ("± 12 dB"), true, proc.displayRange == 12);
-    m.addItem (13, String::fromUTF8 ("± 24 dB"), true, proc.displayRange == 24);
+    m.addItem (13, String::fromUTF8 ("± 18 dB"), true, proc.displayRange == 18);
     m.addSeparator();
     m.addItem (21, String::fromUTF8 ("Tout remettre à plat"));
     m.addSeparator();
@@ -1091,7 +1091,7 @@ void Editor::showSettingsMenu()
         if (r >= 1 && r <= 3) proc.analyserMode = r - 1;
         else if (r == 11) proc.displayRange = 6;
         else if (r == 12) proc.displayRange = 12;
-        else if (r == 13) proc.displayRange = 24;
+        else if (r == 13) proc.displayRange = 18;
         else if (r == 21) { proc.resetFlat(); selection.set (-1); }
         curve.repaint(); strip.repaint(); presetButton.repaint();
     });

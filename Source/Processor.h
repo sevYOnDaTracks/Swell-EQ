@@ -34,7 +34,7 @@ public:
 
     // ---- Préférences d'affichage (sauvegardées avec le projet)
     int analyserMode = 0;          // 0 = avant + après, 1 = après seulement, 2 = désactivé
-    int displayRange = 12;         // échelle de la courbe : ±6, ±12 ou ±24 dB
+    int displayRange = 18;         // échelle de la courbe : ±6, ±12 ou ±18 dB (±18 = tout le gain possible)
     bool showResonances = false;
     int editorWidth = 0, editorHeight = 0;
 

@@ -303,7 +303,7 @@ static void testState()
     Processor a;
     a.loadFactoryPreset (3);
     a.setBand (6, make (BandType::highCut, 9000, 0, 1.2f, 2));
-    a.displayRange = 24;
+    a.displayRange = 6;
     MemoryBlock mb;
     a.getStateInformation (mb);
     Processor b;
@@ -315,7 +315,7 @@ static void testState()
         same = same && x.on == y.on && x.type == y.type && std::abs (x.freq - y.freq) < 0.01f && std::abs (x.gain - y.gain) < 0.001f
                && std::abs (x.q - y.q) < 0.001f && x.slope == y.slope;
     }
-    check (same && b.currentPresetName() == a.currentPresetName() && b.displayRange == 24, String::fromUTF8 ("Toutes les bandes, le nom du preset et l'affichage reviennent à l'identique"));
+    check (same && b.currentPresetName() == a.currentPresetName() && b.displayRange == 6, String::fromUTF8 ("Toutes les bandes, le nom du preset et l'affichage reviennent à l'identique"));
 
     const auto name = String ("Test EQCheck ") + String (Random::getSystemRandom().nextInt (100000));
     check (a.saveUserPreset (name), "Enregistrer un preset perso");

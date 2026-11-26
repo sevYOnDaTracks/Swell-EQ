@@ -50,7 +50,7 @@ AudioProcessorValueTreeState::ParameterLayout Processor::createLayout()
             logRange (20.0f, 20000.0f), defaultFreqs[i],
             AudioParameterFloatAttributes().withLabel ("Hz").withStringFromValueFunction ([] (float v, int) { return formatFreq (v); })));
         group->addChild (std::make_unique<AudioParameterFloat> (ParameterID { ids::band (i, "gain"), 1 }, n + "gain",
-            NormalisableRange<float> (-24.0f, 24.0f), 0.0f,
+            NormalisableRange<float> (-18.0f, 18.0f), 0.0f,
             AudioParameterFloatAttributes().withLabel ("dB").withStringFromValueFunction ([] (float v, int) { return formatGain (v); })));
         group->addChild (std::make_unique<AudioParameterFloat> (ParameterID { ids::band (i, "q"), 1 }, n + "Q",
             logRange (0.1f, 18.0f), (float) butterworthQ,
@@ -308,7 +308,7 @@ void Processor::getStateInformation (MemoryBlock& dest)
     state.setProperty ("presetName", presetName, nullptr);
     state.setProperty ("presetCategory", presetCategory, nullptr);
     state.setProperty ("analyserMode", analyserMode, nullptr);
-    state.setProperty ("displayRange", displayRange, nullptr);
+    state.setProperty ("scale", displayRange, nullptr);
     state.setProperty ("showResonances", showResonances, nullptr);
     state.setProperty ("editorWidth", editorWidth, nullptr);
     state.setProperty ("editorHeight", editorHeight, nullptr);
@@ -325,7 +325,7 @@ void Processor::setStateInformation (const void* data, int size)
             presetName = tree.getProperty ("presetName", "Neutre").toString();
             presetCategory = tree.getProperty ("presetCategory", "").toString();
             analyserMode = jlimit (0, 2, (int) tree.getProperty ("analyserMode", 0));
-            displayRange = jlimit (6, 24, (int) tree.getProperty ("displayRange", 12));
+            displayRange = jlimit (6, 18, (int) tree.getProperty ("scale", 18));
             showResonances = tree.getProperty ("showResonances", false);
             editorWidth = tree.getProperty ("editorWidth", 0);
             editorHeight = tree.getProperty ("editorHeight", 0);
