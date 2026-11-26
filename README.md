@@ -1,4 +1,4 @@
-# Swell EQ 1.0.0
+# Swell EQ 1.0.1
 
 Égaliseur paramétrique 8 bandes, simple à prendre en main : on voit le son en temps réel, on clique sur la courbe,
 et Swell EQ repère les résonances pour aider à les corriger.
