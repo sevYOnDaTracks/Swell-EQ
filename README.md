@@ -11,7 +11,7 @@ Fabricant : Swell Audio. JUCE 8 (copie partagée `../Swell-Reverse/JUCE`). Forma
 
 - **Double-clic** sur la courbe : ajoute une bande à cet endroit (coupe-bas sous 35 Hz, coupe-haut au-dessus de 15 kHz,
   cloche ailleurs). Double-clic sur un point : le supprime.
-- **Glisser** un point : fréquence et gain. **Molette** : largeur (Q). **Maj** : réglage fin. Clic droit : type, pente,
+- **Glisser** un point : fréquence et gain. **Molette** (ou deux doigts sur le trackpad) et **pincement** : largeur (Q). **Maj** : réglage fin. Clic droit : type, pente,
   solo, supprimer.
 - Rangée du bas : réglages de la bande choisie (type, pente, fréquence, gain, Q, écoute en solo, suppression) et **Sortie**.
 - Types : cloche, plateau grave, plateau aigu, coupe-bas, coupe-haut (12 / 24 / 36 / 48 dB/oct, Q réglable), coupe-bande.

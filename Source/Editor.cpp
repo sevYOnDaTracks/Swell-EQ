@@ -555,13 +555,29 @@ void CurveView::mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& wh
     int b = nodeAt (e.position);
     if (b < 0) b = hoverNode >= 0 ? hoverNode : -1;
     if (b < 0) return;
-    auto* qp = param (b, "q");
-    const float q = jlimit (0.1f, 18.0f, proc.band (b).q * std::exp (wheel.deltaY * (wheel.isReversed ? -1.0f : 1.0f) * 0.8f));
-    qp->beginChangeGesture();
-    qp->setValueNotifyingHost (qp->convertTo0to1 (q));
-    qp->endChangeGesture();
+    setBandQ (b, proc.band (b).q * std::exp (wheel.deltaY * (wheel.isReversed ? -1.0f : 1.0f) * 0.8f));
     hoverNode = b;
     repaint();
+}
+
+// Pincement sur le trackpad : écarter les doigts élargit la bande (Q plus petit), les rapprocher la resserre.
+// Agit sur le point sous le curseur, sinon sur la bande choisie.
+void CurveView::mouseMagnify (const MouseEvent& e, float scaleFactor)
+{
+    int b = nodeAt (e.position);
+    if (b < 0) b = hoverNode >= 0 ? hoverNode : selection.band;
+    if (b < 0 || scaleFactor <= 0.0f) return;
+    setBandQ (b, proc.band (b).q / std::pow (scaleFactor, 1.5f));
+    hoverNode = b;
+    repaint();
+}
+
+void CurveView::setBandQ (int b, float q)
+{
+    auto* qp = param (b, "q");
+    qp->beginChangeGesture();
+    qp->setValueNotifyingHost (qp->convertTo0to1 (jlimit (0.1f, 18.0f, q)));
+    qp->endChangeGesture();
 }
 
 void CurveView::showBandMenu (int b, Component* target)

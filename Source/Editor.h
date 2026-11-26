@@ -60,6 +60,7 @@ public:
     void mouseUp (const juce::MouseEvent&) override;
     void mouseDoubleClick (const juce::MouseEvent&) override;
     void mouseWheelMove (const juce::MouseEvent&, const juce::MouseWheelDetails&) override;
+    void mouseMagnify (const juce::MouseEvent&, float scaleFactor) override;
     void showBandMenu (int band, juce::Component* target = nullptr);
     void fixResonance (const Resonance&);
 
@@ -83,6 +84,7 @@ private:
     void paintNodeLabel (juce::Graphics&, int band);
     void paintHint (juce::Graphics&);
     juce::RangedAudioParameter* param (int band, const char* what) const;
+    void setBandQ (int band, float q);
 
     Processor& proc;
     Analyzer& analyzer;
