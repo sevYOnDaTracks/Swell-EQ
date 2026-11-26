@@ -1,0 +1,39 @@
+name: Windows
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configurer
+        run: cmake -S . -B build -A x64 -DEQ_TESTS=ON
+      - name: Compiler
+        run: cmake --build build --config Release --parallel 4 --target SwellEQ_VST3 SwellEQ_Standalone EQCheck
+      - name: Tester (réponse des filtres, clics, latence, presets)
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -Recurse build -Filter EQCheck.exe | Select-Object -First 1
+          & $exe.FullName test-out
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Empaqueter
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path package/Windows -Force
+          Copy-Item -Recurse "build/SwellEQ_artefacts/Release/VST3/Swell EQ.vst3" package/Windows/
+          Copy-Item "build/SwellEQ_artefacts/Release/Standalone/Swell EQ.exe" package/Windows/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Swell-EQ-Windows
+          path: package/Windows
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Swell-EQ-Windows-captures
+          path: test-out
+          if-no-files-found: ignore
