@@ -555,7 +555,7 @@ void CurveView::mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& wh
     int b = nodeAt (e.position);
     if (b < 0) b = hoverNode >= 0 ? hoverNode : -1;
     if (b < 0) return;
-    setBandQ (b, proc.band (b).q * std::exp (wheel.deltaY * (wheel.isReversed ? -1.0f : 1.0f) * 0.8f));
+    setBandQ (b, proc.band (b).q * std::exp (-wheel.deltaY * (wheel.isReversed ? -1.0f : 1.0f) * 0.8f));
     hoverNode = b;
     repaint();
 }
