@@ -46,6 +46,7 @@ juce_add_plugin(SwellEQ
     PLUGIN_CODE Speq
     FORMATS ${EQ_FORMATS}
     PRODUCT_NAME "Swell EQ"
+    ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/Resources/swell-eq-icon.png"
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT FALSE
