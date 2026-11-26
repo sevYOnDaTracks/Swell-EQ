@@ -854,8 +854,12 @@ Editor::Editor (Processor& p)
         const auto category = proc.currentPresetCategory().toUpperCase();
         const auto name = proc.currentPresetName();
         const auto catFont = fonts.ui (11.5f, true), nameFont = fonts.ui (15.0f, true);
-        const float cw = category.isEmpty() ? 0.0f : textWidth (catFont, category) + 10.0f;
-        const float nw = textWidth (nameFont, name);
+        // Entre les deux flèches : la catégorie saute si la place manque, puis le nom se raccourcit.
+        const float avail = r.getWidth() - 96.0f;
+        float cw = category.isEmpty() ? 0.0f : textWidth (catFont, category) + 10.0f;
+        float nw = textWidth (nameFont, name);
+        if (cw + nw + 18.0f > avail) cw = 0.0f;
+        nw = jmin (nw, avail - 18.0f);
         float x = r.getCentreX() - (cw + nw + 18.0f) * 0.5f;
         if (cw > 0.0f)
         {
@@ -866,7 +870,7 @@ Editor::Editor (Processor& p)
         }
         g.setColour (colours::cream);
         g.setFont (nameFont);
-        g.drawText (name, Rectangle<float> (x, r.getY(), nw + 2.0f, r.getHeight()), Justification::centredLeft);
+        g.drawText (name, Rectangle<float> (x, r.getY(), nw + 2.0f, r.getHeight()), Justification::centredLeft, true);
         drawChevron (g, { x + nw + 12.0f, r.getCentreY() + 1.0f }, 4.0f, 2, colours::cream.withAlpha (0.8f), 1.5f);
     };
     presetButton.onClick = [this] { showPresetMenu(); };
@@ -946,12 +950,18 @@ void Editor::resized()
     const int w = getWidth(), h = getHeight();
     proc.editorWidth = w;
     proc.editorHeight = h;
-    auto pill = Rectangle<int> (440, 42).withCentre ({ w / 2, headerHeight / 2 });
+    gear.setBounds (w - 58, 15, 36, 36);
+    resonanceButton.setBounds (w - 58 - 100 - 12 - 132, 17, 132, 32);
+
+    // Pilule des presets : centrée sur la fenêtre si elle tient, sinon dans l'espace libre entre la marque et
+    // le bouton Résonances. Elle ne passe jamais dessous, même en fenêtre étroite (FL Studio).
+    const int left = 200, right = resonanceButton.getX() - 20;
+    const int pillW = jlimit (240, 440, right - left);
+    const int pillX = jlimit (left, jmax (left, right - pillW), w / 2 - pillW / 2);
+    const auto pill = Rectangle<int> (pillX, headerHeight / 2 - 21, pillW, 42);
     presetButton.setBounds (pill);
     prev.setBounds (pill.getX() + 4, pill.getY() + 1, 40, 40);
     next.setBounds (pill.getRight() - 44, pill.getY() + 1, 40, 40);
-    gear.setBounds (w - 58, 15, 36, 36);
-    resonanceButton.setBounds (w - 58 - 100 - 12 - 132, 17, 132, 32);
     curve.setBounds (0, headerHeight, w, h - headerHeight - stripHeight);
     strip.setBounds (0, h - stripHeight, w, stripHeight);
 }

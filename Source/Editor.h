@@ -140,6 +140,8 @@ public:
     void pump (float dtSeconds);
     Selection& getSelection() { return selection; }
     CurveView& getCurve() { return curve; }
+    juce::Rectangle<int> getPresetBounds() const { return presetButton.getBounds(); }
+    juce::Rectangle<int> getResonanceBounds() const { return resonanceButton.getBounds(); }
 
 private:
     void timerCallback() override;

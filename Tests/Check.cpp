@@ -231,6 +231,11 @@ static void testLocked()
 {
     std::cout << "\nLicence" << std::endl;
     Processor p;
+    if (p.licence->isUnlocked())
+    {
+        std::cout << "  (passé : cet ordinateur a une vraie licence Swell EQ activée)" << std::endl;
+        return;
+    }
     p.prepareToPlay (fs, 256);
     AudioBuffer<float> buf (2, 256);
     for (int n = 0; n < 256; ++n) { buf.setSample (0, n, 0.5f); buf.setSample (1, n, 0.5f); }
@@ -448,6 +453,13 @@ static void captures (const File& dir, const File& audioFile)
         ed.setSize (1120, 680);
         feed (p, ed, 1.5f, loud);
         snapshot (ed, dir.getChildFile ("swell-eq-neutre.png"));
+        // Fenêtre la plus étroite (FL Studio l'ouvre souvent ainsi) avec le nom de preset le plus long.
+        ed.setSize (900, 560);
+        p.loadFactoryPreset (17);   // « Batterie · Percussions · brillantes »
+        feed (p, ed, 0.3f);
+        snapshot (ed, dir.getChildFile ("swell-eq-etroit.png"));
+        const auto preset = ed.getPresetBounds(), res = ed.getResonanceBounds();
+        check (! preset.intersects (res) && preset.getX() >= 190, String::fromUTF8 ("Fenêtre étroite : la pilule des presets ne touche ni la marque ni Résonances"));
     }
 }
 
